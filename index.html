@@ -15,6 +15,7 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
@@ -62,20 +63,50 @@
       </div>
     </header>
 
-    <!-- 仓库卡片网格 -->
-    <main class="repos-section">
+    <!-- 动态文章系统 -->
+    <section class="articles-section">
+      <h2 class="section-title">
+        <span class="title-icon">📰</span>
+        <span id="articles-title-text">最新日志</span>
+      </h2>
+      <div id="articles-list" class="articles-list">
+        <!-- 文章列表动态生成 -->
+        <div class="loading-placeholder">加载中...</div>
+      </div>
+    </section>
+
+    <!-- 资源下载区 -->
+    <section class="downloads-section">
+      <h2 class="section-title">
+        <span class="title-icon">💾</span>
+        <span id="downloads-title-text">资源下载</span>
+      </h2>
+      <div id="downloads-grid" class="downloads-grid">
+        <!-- 下载卡片动态生成 -->
+      </div>
+    </section>
+
+    <!-- 原创仓库区 -->
+    <section class="repos-section">
       <h2 class="section-title">
         <span class="title-icon">📦</span>
-        <span id="repos-title-text">开源项目</span>
+        <span id="original-repos-title">原创作品</span>
       </h2>
-      <div id="repos-grid" class="repos-grid">
-        <!-- 仓库卡片会通过 JS 动态生成 -->
-        <div class="loading-placeholder">
-          <div class="loading-spinner"></div>
-          <p>正在加载仓库数据...</p>
-        </div>
+      <div id="original-repos-grid" class="repos-grid original-grid">
+        <!-- 原创仓库卡片动态生成 -->
       </div>
-    </main>
+    </section>
+
+    <!-- Fork 仓库区 -->
+    <section class="repos-section fork-section">
+      <h2 class="section-title">
+        <span class="title-icon">🍴</span>
+        <span id="fork-repos-title">衍生/Fork</span>
+      </h2>
+      <div id="fork-repos-grid" class="repos-grid fork-grid">
+        <!-- Fork 仓库卡片动态生成 -->
+      </div>
+    </section>
 
     <!-- 页脚 + 隐藏触发像素点 -->
     <footer class="site-footer">

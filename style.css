@@ -920,3 +920,341 @@ body.horror-mode::before {
     transform: scale(1.05);
   }
 }
+
+/* ============================================================
+   8. 新增模块样式 (Jekyll-and-Hyde)
+   ============================================================ */
+
+/* --- 通用布局 --- */
+.articles-section,
+.downloads-section,
+.repos-section {
+  margin-bottom: 60px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  color: var(--text-color);
+  transition: all 0.5s ease;
+}
+
+.title-icon {
+  font-size: 1.8rem;
+}
+
+/* --- 文章系统 (治愈模式) --- */
+.articles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-neu-out), var(--shadow-neu-in);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 10px 10px 20px rgba(163, 177, 198, 0.4),
+    -10px -10px 20px rgba(255, 255, 255, 0.8);
+}
+
+.article-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.article-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.article-meta {
+  font-size: 0.85rem;
+  color: #888;
+  display: flex;
+  gap: 12px;
+}
+
+.article-tag {
+  background: rgba(168, 198, 134, 0.2);
+  color: #6B8E23;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.article-content-preview {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  opacity: 0.8;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-full-content {
+  display: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.article-card.expanded .article-content-preview {
+  display: none;
+}
+
+.article-card.expanded .article-full-content {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+/* --- 下载资源区 (治愈模式) --- */
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.download-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--shadow-neu-out);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.download-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  color: var(--secondary-color);
+}
+
+.download-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.download-meta {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+.download-btn {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 8px 24px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(168, 198, 134, 0.4);
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(168, 198, 134, 0.6);
+}
+
+/* --- Fork & 原创区分 --- */
+.fork-section .section-title {
+  font-size: 1.3rem;
+  opacity: 0.8;
+}
+
+.fork-grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.fork-grid .repo-card {
+  padding: 16px;
+}
+
+/* ============================================================
+   9. 恐怖模式变异 (New Modules)
+   ============================================================ */
+body.horror-mode .articles-section,
+body.horror-mode .downloads-section,
+body.horror-mode .repos-section {
+  position: relative;
+}
+
+/* 文章变异 */
+body.horror-mode .article-card {
+  background: #0a0a0a;
+  box-shadow: none;
+  border: 1px solid #333;
+  border-left: 4px solid #cc0000;
+  border-radius: 2px;
+}
+
+body.horror-mode .article-title {
+  font-family: 'Courier New', monospace;
+  color: #cc0000;
+  letter-spacing: -1px;
+}
+
+body.horror-mode .article-tag {
+  background: #330000;
+  color: #ff0000;
+  border: 1px solid #cc0000;
+}
+
+/* 涂抹效果 */
+body.horror-mode .redacted-text {
+  background: #000;
+  color: #000;
+  cursor: help;
+  transition: 0.2s;
+}
+
+body.horror-mode .redacted-text:hover {
+  color: #ff0000;
+  background: #330000;
+}
+
+/* 文本拖影动画 */
+@keyframes textTrail {
+  0% {
+    text-shadow: 0 0 0 red;
+  }
+
+  50% {
+    text-shadow: 2px 0 0 rgba(255, 0, 0, 0.5), -2px 0 0 rgba(0, 255, 255, 0.3);
+  }
+
+  100% {
+    text-shadow: 0 0 0 red;
+  }
+}
+
+body.horror-mode .article-full-content p {
+  animation: textTrail 3s infinite;
+}
+
+/* Fork 变异 (被感染) */
+body.horror-mode .fork-section .repo-card {
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 5px #00ff00, inset 0 0 10px rgba(0, 255, 0, 0.2);
+  animation: infectedPulse 0.1s infinite alternate;
+}
+
+@keyframes infectedPulse {
+  from {
+    border-color: #00ff00;
+    opacity: 1;
+  }
+
+  to {
+    border-color: #00cc00;
+    opacity: 0.8;
+  }
+}
+
+body.horror-mode .fork-section .section-title {
+  color: #00ff00;
+  font-family: 'Creepster', cursive;
+}
+
+/* 下载变异 */
+body.horror-mode .download-card {
+  background: #111;
+  border: 1px dashed #ffff00;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.horror-mode .download-icon {
+  color: #ffff00;
+  animation: shake 0.2s infinite;
+}
+
+body.horror-mode .download-btn {
+  background: repeating-linear-gradient(45deg,
+      #000,
+      #000 10px,
+      #ffff00 10px,
+      #ffff00 20px);
+  color: #000;
+  font-weight: 900;
+  border: 2px solid #000;
+  animation: violentShake 0.1s infinite;
+}
+
+body.horror-mode .download-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 0 20px #ffff00;
+}
+
+@keyframes violentShake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}

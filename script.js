@@ -81,33 +81,55 @@ async function fetchUserProfile() {
 /**
  * 获取公开仓库列表（按 Star 数排序，取前 6 个）
  */
+/**
+ * 获取并分类展示用户仓库 (原创 vs Fork)
+ */
 async function fetchRepos() {
+  const originalGrid = document.getElementById('original-repos-grid');
+  const forkGrid = document.getElementById('fork-repos-grid');
+
+  // 清空现有内容
+  originalGrid.innerHTML = '<div class="loading-placeholder">加载中...</div>';
+  forkGrid.innerHTML = '';
+
   try {
-    const res = await fetch(
-      `${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?sort=stars&direction=desc&per_page=${MAX_REPOS}&type=owner`
+    const response = await fetch(
+      `${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=12`
     );
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const repos = await res.json();
-    renderRepos(repos);
+    if (!response.ok) throw new Error('Repo fetch failed');
+    const repos = await response.json();
+
+    // 过滤并排序：按 Star 数降序
+    const sortedRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+    // 分类
+    const originalRepos = sortedRepos.filter(repo => !repo.fork).slice(0, 6);
+    const forkRepos = sortedRepos.filter(repo => repo.fork).slice(0, 4);
+
+    // 渲染原创仓库
+    renderRepoList(originalRepos, originalGrid);
+
+    // 渲染 Fork 仓库
+    if (forkRepos.length > 0) {
+      renderRepoList(forkRepos, forkGrid);
+    } else {
+      document.querySelector('.fork-section').style.display = 'none';
+    }
+
   } catch (err) {
-    console.error('获取仓库列表失败:', err);
-    const grid = document.getElementById('repos-grid');
-    grid.innerHTML = `
-      <div class="loading-placeholder">
-        <p>⚠️ 加载仓库数据失败，请刷新重试</p>
-      </div>`;
+    console.error('获取仓库失败:', err);
+    originalGrid.innerHTML = '<p class="error-msg">加载仓库列表失败，请稍后重试。</p>';
+    forkGrid.innerHTML = '';
   }
 }
 
 /**
- * 渲染仓库卡片到页面
+ * 渲染仓库列表辅助函数
  */
-function renderRepos(repos) {
-  const grid = document.getElementById('repos-grid');
-  grid.innerHTML = '';
-
+function renderRepoList(repos, container) {
+  container.innerHTML = '';
   if (repos.length === 0) {
-    grid.innerHTML = '<div class="loading-placeholder"><p>暂无公开仓库</p></div>';
+    container.innerHTML = '<p class="error-msg">暂无内容</p>';
     return;
   }
 
@@ -119,7 +141,6 @@ function renderRepos(repos) {
     card.className = 'repo-card';
     card.dataset.index = index;
 
-    // 语言颜色映射
     const langColor = getLanguageColor(repo.language);
 
     card.innerHTML = `
@@ -136,8 +157,123 @@ function renderRepos(repos) {
         <span class="repo-meta-item">🔀 ${repo.forks_count}</span>
       </div>
     `;
+    container.appendChild(card);
+  });
+}
 
-    grid.appendChild(card);
+/**
+ * 渲染文章系统 (基于 Issues)
+ */
+async function fetchIssues() {
+  const container = document.getElementById('articles-list');
+  const repo = CONFIG.issueRepo || `${GITHUB_USERNAME}/personal-blog`;
+
+  try {
+    const response = await fetch(
+      `${GITHUB_API_BASE}/repos/${repo}/issues?state=open&per_page=5`
+    );
+    if (!response.ok) throw new Error('Issues fetch failed');
+    const issues = await response.json();
+
+    container.innerHTML = '';
+
+    // 过滤掉 Pull Requests
+    const actualIssues = issues.filter(i => !i.pull_request);
+
+    if (actualIssues.length === 0) {
+      container.innerHTML = '<p class="empty-msg">暂无日志...</p>';
+      return;
+    }
+
+    actualIssues.forEach(issue => {
+      const date = new Date(issue.created_at).toLocaleDateString('zh-CN');
+
+      const el = document.createElement('article');
+      el.className = 'article-card';
+
+      const tagsHtml = issue.labels.map(label =>
+        `<span class="article-tag" style="border-color:#${label.color}; color:#${label.color}">#${label.name}</span>`
+      ).join('');
+
+      el.innerHTML = `
+        <div class="article-header">
+          <h3 class="article-title">${escapeHtml(issue.title)}</h3>
+          <div class="article-meta">
+            <span>${date}</span>
+          </div>
+        </div>
+        <div class="article-tags">${tagsHtml}</div>
+        <div class="article-content-preview">
+          ${issue.body ? escapeHtml(issue.body).slice(0, 150) + '...' : '无内容'}
+        </div>
+        <div class="article-full-content markdown-body"></div>
+      `;
+
+      el.addEventListener('click', () => {
+        if (!el.classList.contains('expanded')) {
+          const fullContentDiv = el.querySelector('.article-full-content');
+          if (!fullContentDiv.innerHTML.trim()) {
+            // 使用 marked 解析
+            fullContentDiv.innerHTML = marked.parse(issue.body || '');
+
+            if (document.body.classList.contains('horror-mode')) {
+              applyRedactionEffect(fullContentDiv);
+            }
+          }
+          el.classList.add('expanded');
+        } else {
+          el.classList.remove('expanded');
+        }
+      });
+
+      container.appendChild(el);
+    });
+
+  } catch (err) {
+    console.error('获取文章失败:', err);
+    container.innerHTML = '<p class="error-msg">日志数据损坏/加载失败</p>';
+  }
+}
+
+/**
+ * 渲染资源下载区
+ */
+function renderDownloads() {
+  const container = document.getElementById('downloads-grid');
+  const downloads = CONFIG.downloads || [];
+
+  container.innerHTML = '';
+
+  downloads.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'download-card';
+    el.innerHTML = `
+      <div class="download-icon">💾</div>
+      <div class="download-name">${escapeHtml(item.name)}</div>
+      <div class="download-meta">${escapeHtml(item.version)} | ${escapeHtml(item.size)}</div>
+      <a href="${item.url}" class="download-btn" target="_blank">点击下载</a>
+    `;
+    container.appendChild(el);
+  });
+}
+
+/**
+ * 恐怖模式：应用随机涂抹效果
+ */
+function applyRedactionEffect(element) {
+  const elements = element.querySelectorAll('p, li, h1, h2, h3');
+  elements.forEach(p => {
+    if (Math.random() > 0.6) {
+      p.innerHTML = p.innerText.split('').map(char => {
+        // 随机字符替换或包裹
+        if (Math.random() > 0.95) return `<span class="redacted-text">${char}</span>`;
+        return char;
+      }).join('');
+      // 让部分单词变成涂抹块
+      p.innerHTML = p.innerHTML.replace(/([a-zA-Z0-9\u4e00-\u9fa5]{2,})/g, (match) => {
+        return Math.random() > 0.8 ? `<span class="redacted-text">${match}</span>` : match;
+      });
+    }
   });
 }
 
@@ -352,8 +488,20 @@ function switchToHorrorMode() {
   startCursorTrails();
   startRandomFlickers();
 
-  // 启动音效（需要用户交互后才能播放）
-  startHorrorAudio();
+  // 启动音频上下文
+  initAudio(); // 注意：initAudio 改名为 startHorrorAudio 了吗？检查之后代码发现是 startHorrorAudio
+
+  // 更新文案
+  document.getElementById('articles-title-text').innerText = '未解密档案 (TOP SECRET)';
+  document.getElementById('downloads-title-text').innerText = '警告：未知数据源';
+  document.getElementById('original-repos-title').innerText = '// 被遗忘的项目';
+  document.getElementById('fork-repos-title').innerText = '被感染的克隆体';
+
+  const downloadBtns = document.querySelectorAll('.download-btn');
+  downloadBtns.forEach(btn => btn.innerText = 'DO NOT CLICK');
+
+  // 对已展开的文章应用涂抹
+  document.querySelectorAll('.article-full-content').forEach(applyRedactionEffect);
 }
 
 /**
@@ -371,6 +519,15 @@ function switchToHealingMode() {
   stopCursorTrails();
   stopRandomFlickers();
   stopHorrorAudio();
+
+  // 恢复文案
+  document.getElementById('articles-title-text').innerText = '最新日志';
+  document.getElementById('downloads-title-text').innerText = '资源下载';
+  document.getElementById('original-repos-title').innerText = '原创作品';
+  document.getElementById('fork-repos-title').innerText = '衍生/Fork';
+
+  const downloadBtns = document.querySelectorAll('.download-btn');
+  downloadBtns.forEach(btn => btn.innerText = '点击下载');
 }
 
 /* ============================================================
@@ -671,7 +828,10 @@ function stopHorrorAudio() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // 加载 GitHub 数据
+  // 加载 GitHub 数据
   fetchUserProfile();
+  fetchIssues();
+  renderDownloads();
   fetchRepos();
 
   // 初始化触发器
