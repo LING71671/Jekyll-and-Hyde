@@ -20,10 +20,18 @@
 'use strict';
 
 /* ============================================================
-   GitHub 配置
+   GitHub 配置（从 config.js 读取）
    ============================================================ */
-const GITHUB_USERNAME = 'LING71671';
-const GITHUB_API_BASE = 'https://api.github.com';
+const CONFIG = window.BlogConfig || {
+  githubUsername: 'LING71671',
+  blogTitle: 'Personal Blog',
+  welcomeMessage: '🌸 欢迎!',
+  horrorHint: '💡 ...',
+  githubApiBase: 'https://api.github.com'
+};
+
+const GITHUB_USERNAME = CONFIG.githubUsername;
+const GITHUB_API_BASE = CONFIG.githubApiBase;
 const MAX_REPOS = 6;
 
 /* ============================================================
@@ -62,7 +70,7 @@ async function fetchUserProfile() {
     bioEl.textContent = data.bio || '一位热爱编程的开发者 🌱';
 
     // 更新页面标题
-    document.title = `${data.login} - Personal Blog`;
+    document.title = `${data.login} - ${CONFIG.blogTitle}`;
   } catch (err) {
     console.error('获取用户信息失败:', err);
     document.getElementById('username').textContent = GITHUB_USERNAME;
@@ -673,11 +681,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   console.log(
-    '%c🌸 欢迎来到我的个人主页！',
+    `%c${CONFIG.welcomeMessage}`,
     'color: #A8C686; font-size: 16px; font-weight: bold;'
   );
   console.log(
-    '%c💡 提示：有些东西……并不像表面那么简单。',
+    `%c${CONFIG.horrorHint}`,
     'color: #8B7E6A; font-style: italic;'
   );
 });
