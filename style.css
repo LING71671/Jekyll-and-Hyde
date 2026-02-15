@@ -1,0 +1,802 @@
+/**
+ * ============================================================
+ * 个人博客主页 - 双主题样式系统
+ * ============================================================
+ * 
+ * 设计理念：
+ * - 通过 CSS 自定义属性（Custom Properties）管理两套截然不同的主题
+ * - :root 定义治愈模式变量，.horror-mode 类覆盖为恐怖模式变量
+ * - 所有组件样式引用变量，实现一键切换
+ * 
+ * ⚠️ 光敏性癫痫警告 (Photosensitive Epilepsy Warning)
+ * 恐怖模式包含：快速闪烁、剧烈抖动、颜色反转效果
+ * ============================================================
+ */
+
+/* ============================================================
+   1. CSS 自定义属性 - 治愈模式（默认）
+   色调参考：日系胶片摄影风格
+   奶油色、浅暖黄、柔和鼠尾草绿
+   ============================================================ */
+:root {
+  /* --- 主色调 --- */
+  --bg-primary: #FFF8F0;          /* 奶油色背景 */
+  --bg-secondary: #FEF3E2;       /* 温暖浅黄 */
+  --bg-card: #FFFFFF;             /* 纯白卡片 */
+  --text-primary: #5D4E37;       /* 棕褐色主文字 */
+  --text-secondary: #8B7E6A;     /* 暖灰色次要文字 */
+  --accent: #A8C686;             /* 鼠尾草绿 */
+  --accent-secondary: #F2C078;  /* 暖杏黄 */
+  --accent-soft: #E8D5B7;       /* 柔和杏仁 */
+  --border-color: rgba(93, 78, 55, 0.08);
+  --heart-color: #E8836B;        /* 温暖珊瑚色 */
+
+  /* --- 阴影系统（Neumorphism 弥散风格）--- */
+  --shadow-float: 
+    0 4px 16px rgba(168, 198, 134, 0.15),
+    0 8px 32px rgba(242, 192, 120, 0.1),
+    0 16px 48px rgba(93, 78, 55, 0.06);
+  --shadow-hover: 
+    0 8px 24px rgba(168, 198, 134, 0.25),
+    0 16px 48px rgba(242, 192, 120, 0.15),
+    0 24px 64px rgba(93, 78, 55, 0.08);
+
+  /* --- 排版 --- */
+  --font-primary: 'Varela Round', 'Noto Sans SC', sans-serif;
+  --font-display: 'Varela Round', 'Noto Sans SC', sans-serif;
+  --border-radius: 24px;
+  --border-radius-sm: 16px;
+  --border-width: 1px;
+  --border-style: solid;
+
+  /* --- 动画 --- */
+  --transition-speed: 0.5s;
+  --transition-ease: ease-in-out;
+  --cursor: default;
+
+  /* --- 滤镜 --- */
+  --avatar-filter: none;
+  --card-filter: none;
+
+  /* --- 恐怖模式专用（默认隐藏） --- */
+  --scanline-opacity: 0;
+  --noise-opacity: 0;
+  --glitch-text-shadow: none;
+  --horror-border: none;
+}
+
+/* ============================================================
+   2. CSS 自定义属性 - 恐怖模式
+   色调参考：模拟信号恐怖（Analog Horror）+ 粗野主义
+   死寂黑、铁锈血红、病态荧光绿
+   ============================================================ */
+.horror-mode {
+  /* --- 主色调 --- */
+  --bg-primary: #0A0A0A;          /* 死寂黑 */
+  --bg-secondary: #111111;        /* 深渊灰 */
+  --bg-card: #0D0D0D;             /* 暗黑卡片 */
+  --text-primary: #C8FFB0;        /* 病态荧光绿 */
+  --text-secondary: #6B8F5E;      /* 暗绿 */
+  --accent: #8B0000;              /* 铁锈血红 */
+  --accent-secondary: #FF0033;    /* 警告红 */
+  --accent-soft: #1A1A1A;
+  --border-color: rgba(139, 0, 0, 0.5);
+  --heart-color: #FF0033;
+
+  /* --- 阴影系统（尖锐高对比度） --- */
+  --shadow-float: 
+    0 0 10px rgba(139, 0, 0, 0.4),
+    0 0 30px rgba(139, 0, 0, 0.2),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 
+    0 0 20px rgba(255, 0, 51, 0.5),
+    0 0 40px rgba(139, 0, 0, 0.3),
+    inset 0 0 30px rgba(0, 0, 0, 0.6);
+
+  /* --- 排版 --- */
+  --font-primary: 'Creepster', 'Noto Sans SC', cursive;
+  --font-display: 'Creepster', cursive;
+  --border-radius: 0px;            /* 尖锐直角 */
+  --border-radius-sm: 0px;
+  --border-width: 2px;
+  --border-style: dashed;
+
+  /* --- 动画 --- */
+  --transition-speed: 0.1s;
+  --transition-ease: step-end;
+  --cursor: crosshair;
+
+  /* --- 滤镜 --- */
+  --avatar-filter: contrast(200%) grayscale(100%) brightness(0.8);
+  --card-filter: contrast(120%) saturate(50%);
+
+  /* --- 恐怖元素 --- */
+  --scanline-opacity: 0.12;
+  --noise-opacity: 0.08;
+  --glitch-text-shadow: 
+    2px 0 #FF0033,
+    -2px 0 #00FF41,
+    0 2px #8B0000;
+  --horror-border: 2px dashed rgba(139, 0, 0, 0.6);
+}
+
+/* ============================================================
+   3. 全局重置与基础样式
+   ============================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: var(--cursor);
+  transition: 
+    background-color var(--transition-speed) var(--transition-ease),
+    color var(--transition-speed) var(--transition-ease);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   4. 光敏警告弹窗
+   ============================================================ */
+.warning-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.warning-overlay.active {
+  display: flex;
+}
+
+.warning-dialog {
+  background: #1a1a1a;
+  border: 2px solid #FF0033;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 60px rgba(255, 0, 51, 0.3);
+}
+
+.warning-dialog h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  color: #FF0033;
+}
+
+.warning-dialog p {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  color: #ccc;
+}
+
+.warning-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.btn-proceed,
+.btn-cancel {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-proceed {
+  background: #FF0033;
+  color: #fff;
+}
+
+.btn-proceed:hover {
+  background: #cc0029;
+  box-shadow: 0 0 20px rgba(255, 0, 51, 0.5);
+}
+
+.btn-cancel {
+  background: #333;
+  color: #aaa;
+}
+
+.btn-cancel:hover {
+  background: #444;
+}
+
+/* ============================================================
+   5. Glitch 过渡层
+   ============================================================ */
+.glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  background: #000;
+}
+
+.glitch-overlay.active {
+  opacity: 1;
+  animation: glitchFlash 1.5s forwards;
+}
+
+.glitch-overlay canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Glitch 闪烁主动画 */
+@keyframes glitchFlash {
+  0%   { opacity: 1; filter: hue-rotate(0deg) invert(0); }
+  5%   { filter: hue-rotate(90deg) invert(1); }
+  10%  { filter: hue-rotate(180deg) invert(0); transform: translateX(10px); }
+  15%  { filter: hue-rotate(270deg) invert(1); transform: translateX(-15px) skewX(5deg); }
+  20%  { filter: hue-rotate(45deg) invert(0); transform: translateY(8px); }
+  25%  { filter: hue-rotate(135deg) invert(1) contrast(200%); transform: scaleY(1.02); }
+  30%  { filter: hue-rotate(0deg) invert(0); transform: translateX(5px) skewX(-3deg); }
+  35%  { filter: invert(1) saturate(300%); transform: translateX(-8px); }
+  40%  { filter: hue-rotate(200deg) brightness(3); transform: scaleX(1.01) skewY(2deg); }
+  50%  { filter: hue-rotate(100deg) invert(1) contrast(150%); transform: none; }
+  60%  { filter: hue-rotate(300deg) invert(0) brightness(0.3); }
+  70%  { filter: invert(1) hue-rotate(60deg); transform: translateY(-5px); }
+  80%  { filter: hue-rotate(0deg) invert(0) brightness(5); }
+  85%  { opacity: 0; }
+  90%  { opacity: 1; filter: none; }
+  95%  { opacity: 0; }
+  100% { opacity: 0; filter: none; }
+}
+
+/* ============================================================
+   6. 噪点 Canvas 层（恐怖模式背景）
+   ============================================================ */
+.noise-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--noise-opacity);
+  transition: opacity 0.3s;
+}
+
+/* ============================================================
+   7. 扫描线叠加层
+   ============================================================ */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--scanline-opacity);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.3) 2px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+  transition: opacity 0.3s;
+}
+
+/* ============================================================
+   8. 光标残留（恐怖模式）
+   ============================================================ */
+#cursor-trails {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.cursor-trail {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: trailFade 1.2s forwards;
+}
+
+@keyframes trailFade {
+  0%   { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.5); }
+}
+
+/* ============================================================
+   9. 主容器
+   ============================================================ */
+.container {
+  position: relative;
+  z-index: 5;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 24px 40px;
+}
+
+/* ============================================================
+   10. 头部区域 - 头像 + 用户信息
+   ============================================================ */
+.profile-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* 头像容器 */
+.avatar-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 28px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: border-radius var(--transition-speed) var(--transition-ease);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-float);
+  filter: var(--avatar-filter);
+  transition: 
+    filter var(--transition-speed) var(--transition-ease),
+    border-radius var(--transition-speed) var(--transition-ease),
+    box-shadow var(--transition-speed) var(--transition-ease);
+}
+
+/* 恐怖模式头像扭曲叠加层 */
+.avatar-glitch-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.horror-mode .avatar-glitch-layer {
+  opacity: 1;
+  animation: avatarDistort 3s infinite;
+}
+
+@keyframes avatarDistort {
+  0%, 90%, 100% { clip-path: inset(0); transform: none; }
+  92% { clip-path: inset(20% 0 30% 0); transform: translateX(4px) skewX(2deg); }
+  94% { clip-path: inset(50% 0 10% 0); transform: translateX(-6px); }
+  96% { clip-path: inset(10% 0 60% 0); transform: translateX(3px) skewX(-1deg); }
+  98% { clip-path: inset(0); transform: scaleY(1.02); }
+}
+
+/* 用户名 */
+.username {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  text-shadow: var(--glitch-text-shadow);
+  transition: 
+    color var(--transition-speed) var(--transition-ease),
+    text-shadow var(--transition-speed) var(--transition-ease);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 恐怖模式用户名抖动 */
+.horror-mode .username {
+  animation: textGlitch 4s infinite;
+}
+
+@keyframes textGlitch {
+  0%, 85%, 100% { transform: none; text-shadow: var(--glitch-text-shadow); }
+  86% { transform: translateX(3px) skewX(2deg); text-shadow: 4px 0 #FF0033, -4px 0 #00FF41; }
+  88% { transform: translateX(-5px); text-shadow: -3px 2px #FF0033, 3px -2px #00FF41; }
+  90% { transform: translateX(2px) skewX(-1deg); text-shadow: 2px 0 #8B0000; }
+  92% { transform: none; text-shadow: var(--glitch-text-shadow); }
+}
+
+/* 简介 */
+.bio {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+/* 装饰元素 */
+.header-decorations {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.deco-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: background var(--transition-speed) var(--transition-ease);
+}
+
+.deco-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+  border-radius: 1px;
+  transition: background var(--transition-speed) var(--transition-ease);
+}
+
+.horror-mode .deco-dot {
+  animation: decoFlicker 2s infinite;
+}
+
+@keyframes decoFlicker {
+  0%, 90%, 100% { opacity: 1; }
+  92% { opacity: 0; }
+  94% { opacity: 1; }
+  96% { opacity: 0.3; }
+}
+
+/* ============================================================
+   11. 仓库卡片区域
+   ============================================================ */
+.repos-section {
+  margin-bottom: 60px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  padding-left: 4px;
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.horror-mode .section-title {
+  text-shadow: var(--glitch-text-shadow);
+}
+
+.horror-mode .title-icon {
+  display: none;
+}
+
+.horror-mode .section-title::before {
+  content: "⛧";
+  color: var(--accent-secondary);
+}
+
+/* 卡片网格 */
+.repos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* 单张仓库卡片 */
+.repo-card {
+  background: var(--bg-card);
+  border: var(--border-width) var(--border-style) var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 28px;
+  box-shadow: var(--shadow-float);
+  filter: var(--card-filter);
+  transition: 
+    all var(--transition-speed) var(--transition-ease);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+/* 治愈模式悬浮效果：上浮 + 呼吸缩放 */
+.repo-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-hover);
+}
+
+/* 恐怖模式卡片悬浮 */
+.horror-mode .repo-card:hover {
+  transform: translateY(-2px) skewX(-0.5deg);
+  border-color: var(--accent-secondary);
+}
+
+/* 卡片标题 */
+.repo-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.repo-name::before {
+  content: "✦";
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.horror-mode .repo-name::before {
+  content: "☠";
+  color: var(--accent-secondary);
+}
+
+/* 卡片描述 */
+.repo-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+/* 卡片底部信息 */
+.repo-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.repo-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ============================================================
+   12. 加载占位
+   ============================================================ */
+.loading-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   13. 页脚
+   ============================================================ */
+.site-footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  position: relative;
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.heart {
+  color: var(--heart-color);
+  display: inline-block;
+  animation: heartbeat 2s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* 恐怖模式心跳变快 */
+.horror-mode .heart {
+  animation: heartbeatFast 0.5s infinite;
+  color: var(--accent-secondary);
+}
+
+@keyframes heartbeatFast {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+}
+
+.footer-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+/* 隐藏触发点 */
+.secret-pixel {
+  width: 6px;
+  height: 6px;
+  background: var(--bg-primary);
+  opacity: 0.02;
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: default;
+  border-radius: 50%;
+}
+
+/* ============================================================
+   14. 恐怖模式专用：随机黑屏闪烁
+   ============================================================ */
+.blackout {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 8000;
+  pointer-events: none;
+  animation: blackoutFlash 0.1s forwards;
+}
+
+@keyframes blackoutFlash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* 恐怖模式卡片闪烁消失 */
+.card-flicker {
+  animation: flickerOut 0.3s forwards;
+}
+
+@keyframes flickerOut {
+  0%   { opacity: 1; }
+  25%  { opacity: 0; }
+  50%  { opacity: 0.7; }
+  75%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ============================================================
+   15. 恐怖模式专用：整体 body 抖动效果
+   ============================================================ */
+.horror-mode.screen-shake {
+  animation: screenShake 0.15s;
+}
+
+@keyframes screenShake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(3px, -2px); }
+  50%  { transform: translate(-3px, 1px); }
+  75%  { transform: translate(2px, 3px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ============================================================
+   16. 响应式设计
+   ============================================================ */
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 16px 30px;
+  }
+
+  .username {
+    font-size: 2rem;
+  }
+
+  .avatar-wrapper {
+    width: 110px;
+    height: 110px;
+  }
+
+  .repos-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .repo-card {
+    padding: 20px;
+  }
+
+  .warning-dialog {
+    padding: 24px;
+  }
+
+  .warning-dialog h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .username {
+    font-size: 1.6rem;
+  }
+
+  .bio {
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+}
+
+/* ============================================================
+   17. 治愈模式特有：全局柔和呼吸背景动画
+   利用 body::before 伪元素创造微弱的背景光晕脉动
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    rgba(168, 198, 134, 0.15) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    ellipse at 70% 80%,
+    rgba(242, 192, 120, 0.12) 0%,
+    transparent 50%
+  );
+  animation: bgBreathe 8s ease-in-out infinite;
+  transition: opacity 1s;
+}
+
+.horror-mode body::before,
+body.horror-mode::before {
+  opacity: 0;
+}
+
+@keyframes bgBreathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}

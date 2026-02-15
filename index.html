@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LING71671 的个人博客主页 - 创意开发者">
+  <title>LING71671 - Personal Blog</title>
+
+  <!-- Google Fonts: 治愈模式用 Varela Round，恐怖模式用 Creepster -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Creepster&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       ⚠️ 光敏性癫痫警告 (Photosensitive Epilepsy Warning)
+       本页面包含一个隐藏模式，其中包含：
+       - 快速闪烁的灯光效果
+       - 剧烈的屏幕抖动和颜色反转
+       - 随机的屏幕黑屏
+       如果您对闪烁灯光敏感，请谨慎操作。
+       ============================================================ -->
+
+  <!-- 光敏警告弹窗（在触发恐怖模式前弹出） -->
+  <div id="epilepsy-warning" class="warning-overlay" aria-hidden="true">
+    <div class="warning-dialog">
+      <h2>⚠️ 光敏性癫痫警告</h2>
+      <p>接下来的内容包含<strong>快速闪烁的灯光、屏幕抖动和颜色反转效果</strong>。</p>
+      <p>如果您对闪光灯敏感或有光敏性癫痫病史，<strong>请勿继续</strong>。</p>
+      <div class="warning-actions">
+        <button id="warning-proceed" class="btn-proceed">我了解风险，继续</button>
+        <button id="warning-cancel" class="btn-cancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glitch 过渡动画覆盖层 -->
+  <div id="glitch-overlay" class="glitch-overlay" aria-hidden="true">
+    <canvas id="glitch-canvas"></canvas>
+  </div>
+
+  <!-- 恐怖模式背景噪点 Canvas -->
+  <canvas id="noise-canvas" class="noise-canvas" aria-hidden="true"></canvas>
+
+  <!-- 扫描线叠加层 -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- 光标残留容器 -->
+  <div id="cursor-trails" aria-hidden="true"></div>
+
+  <!-- 主体内容 -->
+  <div class="container">
+
+    <!-- 头部区域：头像 + 用户信息 -->
+    <header class="profile-header">
+      <div class="avatar-wrapper">
+        <img id="avatar" src="" alt="用户头像" class="avatar" loading="lazy">
+        <div class="avatar-glitch-layer" aria-hidden="true"></div>
+      </div>
+      <h1 id="username" class="username">Loading...</h1>
+      <p id="bio" class="bio">Fetching profile...</p>
+      <div class="header-decorations">
+        <span class="deco-dot"></span>
+        <span class="deco-line"></span>
+        <span class="deco-dot"></span>
+      </div>
+    </header>
+
+    <!-- 仓库卡片网格 -->
+    <main class="repos-section">
+      <h2 class="section-title">
+        <span class="title-icon">📦</span>
+        <span id="repos-title-text">开源项目</span>
+      </h2>
+      <div id="repos-grid" class="repos-grid">
+        <!-- 仓库卡片会通过 JS 动态生成 -->
+        <div class="loading-placeholder">
+          <div class="loading-spinner"></div>
+          <p>正在加载仓库数据...</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- 页脚 + 隐藏触发像素点 -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Built with <span class="heart">♥</span> by LING71671
+      </p>
+      <p class="footer-sub">Powered by GitHub API & Vanilla JS</p>
+      <!-- 隐藏触发点：几乎不可见的 1x1 像素 -->
+      <div id="secret-pixel" class="secret-pixel" title="" aria-hidden="true"></div>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
