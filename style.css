@@ -20,23 +20,32 @@
    ============================================================ */
 :root {
   /* --- 主色调 --- */
-  --bg-primary: #FFF8F0;          /* 奶油色背景 */
-  --bg-secondary: #FEF3E2;       /* 温暖浅黄 */
-  --bg-card: #FFFFFF;             /* 纯白卡片 */
-  --text-primary: #5D4E37;       /* 棕褐色主文字 */
-  --text-secondary: #8B7E6A;     /* 暖灰色次要文字 */
-  --accent: #A8C686;             /* 鼠尾草绿 */
-  --accent-secondary: #F2C078;  /* 暖杏黄 */
-  --accent-soft: #E8D5B7;       /* 柔和杏仁 */
+  --bg-primary: #FFF8F0;
+  /* 奶油色背景 */
+  --bg-secondary: #FEF3E2;
+  /* 温暖浅黄 */
+  --bg-card: #FFFFFF;
+  /* 纯白卡片 */
+  --text-primary: #5D4E37;
+  /* 棕褐色主文字 */
+  --text-secondary: #8B7E6A;
+  /* 暖灰色次要文字 */
+  --accent: #A8C686;
+  /* 鼠尾草绿 */
+  --accent-secondary: #F2C078;
+  /* 暖杏黄 */
+  --accent-soft: #E8D5B7;
+  /* 柔和杏仁 */
   --border-color: rgba(93, 78, 55, 0.08);
-  --heart-color: #E8836B;        /* 温暖珊瑚色 */
+  --heart-color: #E8836B;
+  /* 温暖珊瑚色 */
 
   /* --- 阴影系统（Neumorphism 弥散风格）--- */
-  --shadow-float: 
+  --shadow-float:
     0 4px 16px rgba(168, 198, 134, 0.15),
     0 8px 32px rgba(242, 192, 120, 0.1),
     0 16px 48px rgba(93, 78, 55, 0.06);
-  --shadow-hover: 
+  --shadow-hover:
     0 8px 24px rgba(168, 198, 134, 0.25),
     0 16px 48px rgba(242, 192, 120, 0.15),
     0 24px 64px rgba(93, 78, 55, 0.08);
@@ -72,23 +81,30 @@
    ============================================================ */
 .horror-mode {
   /* --- 主色调 --- */
-  --bg-primary: #0A0A0A;          /* 死寂黑 */
-  --bg-secondary: #111111;        /* 深渊灰 */
-  --bg-card: #0D0D0D;             /* 暗黑卡片 */
-  --text-primary: #C8FFB0;        /* 病态荧光绿 */
-  --text-secondary: #6B8F5E;      /* 暗绿 */
-  --accent: #8B0000;              /* 铁锈血红 */
-  --accent-secondary: #FF0033;    /* 警告红 */
+  --bg-primary: #0A0A0A;
+  /* 死寂黑 */
+  --bg-secondary: #111111;
+  /* 深渊灰 */
+  --bg-card: #0D0D0D;
+  /* 暗黑卡片 */
+  --text-primary: #C8FFB0;
+  /* 病态荧光绿 */
+  --text-secondary: #6B8F5E;
+  /* 暗绿 */
+  --accent: #8B0000;
+  /* 铁锈血红 */
+  --accent-secondary: #FF0033;
+  /* 警告红 */
   --accent-soft: #1A1A1A;
   --border-color: rgba(139, 0, 0, 0.5);
   --heart-color: #FF0033;
 
   /* --- 阴影系统（尖锐高对比度） --- */
-  --shadow-float: 
+  --shadow-float:
     0 0 10px rgba(139, 0, 0, 0.4),
     0 0 30px rgba(139, 0, 0, 0.2),
     inset 0 0 20px rgba(0, 0, 0, 0.5);
-  --shadow-hover: 
+  --shadow-hover:
     0 0 20px rgba(255, 0, 51, 0.5),
     0 0 40px rgba(139, 0, 0, 0.3),
     inset 0 0 30px rgba(0, 0, 0, 0.6);
@@ -96,7 +112,8 @@
   /* --- 排版 --- */
   --font-primary: 'Creepster', 'Noto Sans SC', cursive;
   --font-display: 'Creepster', cursive;
-  --border-radius: 0px;            /* 尖锐直角 */
+  --border-radius: 0px;
+  /* 尖锐直角 */
   --border-radius-sm: 0px;
   --border-width: 2px;
   --border-style: dashed;
@@ -113,7 +130,7 @@
   /* --- 恐怖元素 --- */
   --scanline-opacity: 0.12;
   --noise-opacity: 0.08;
-  --glitch-text-shadow: 
+  --glitch-text-shadow:
     2px 0 #FF0033,
     -2px 0 #00FF41,
     0 2px #8B0000;
@@ -123,7 +140,9 @@
 /* ============================================================
    3. 全局重置与基础样式
    ============================================================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -139,7 +158,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   cursor: var(--cursor);
-  transition: 
+  transition:
     background-color var(--transition-speed) var(--transition-ease),
     color var(--transition-speed) var(--transition-ease);
   min-height: 100vh;
@@ -147,85 +166,7 @@ body {
   position: relative;
 }
 
-/* ============================================================
-   4. 光敏警告弹窗
-   ============================================================ */
-.warning-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: rgba(0, 0, 0, 0.85);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(8px);
-}
 
-.warning-overlay.active {
-  display: flex;
-}
-
-.warning-dialog {
-  background: #1a1a1a;
-  border: 2px solid #FF0033;
-  border-radius: 12px;
-  padding: 40px;
-  max-width: 500px;
-  width: 90%;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 0 60px rgba(255, 0, 51, 0.3);
-}
-
-.warning-dialog h2 {
-  font-size: 1.8rem;
-  margin-bottom: 16px;
-  color: #FF0033;
-}
-
-.warning-dialog p {
-  font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 12px;
-  color: #ccc;
-}
-
-.warning-actions {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-.btn-proceed,
-.btn-cancel {
-  padding: 12px 28px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-proceed {
-  background: #FF0033;
-  color: #fff;
-}
-
-.btn-proceed:hover {
-  background: #cc0029;
-  box-shadow: 0 0 20px rgba(255, 0, 51, 0.5);
-}
-
-.btn-cancel {
-  background: #333;
-  color: #aaa;
-}
-
-.btn-cancel:hover {
-  background: #444;
-}
 
 /* ============================================================
    5. Glitch 过渡层
@@ -251,23 +192,85 @@ body {
 
 /* Glitch 闪烁主动画 */
 @keyframes glitchFlash {
-  0%   { opacity: 1; filter: hue-rotate(0deg) invert(0); }
-  5%   { filter: hue-rotate(90deg) invert(1); }
-  10%  { filter: hue-rotate(180deg) invert(0); transform: translateX(10px); }
-  15%  { filter: hue-rotate(270deg) invert(1); transform: translateX(-15px) skewX(5deg); }
-  20%  { filter: hue-rotate(45deg) invert(0); transform: translateY(8px); }
-  25%  { filter: hue-rotate(135deg) invert(1) contrast(200%); transform: scaleY(1.02); }
-  30%  { filter: hue-rotate(0deg) invert(0); transform: translateX(5px) skewX(-3deg); }
-  35%  { filter: invert(1) saturate(300%); transform: translateX(-8px); }
-  40%  { filter: hue-rotate(200deg) brightness(3); transform: scaleX(1.01) skewY(2deg); }
-  50%  { filter: hue-rotate(100deg) invert(1) contrast(150%); transform: none; }
-  60%  { filter: hue-rotate(300deg) invert(0) brightness(0.3); }
-  70%  { filter: invert(1) hue-rotate(60deg); transform: translateY(-5px); }
-  80%  { filter: hue-rotate(0deg) invert(0) brightness(5); }
-  85%  { opacity: 0; }
-  90%  { opacity: 1; filter: none; }
-  95%  { opacity: 0; }
-  100% { opacity: 0; filter: none; }
+  0% {
+    opacity: 1;
+    filter: hue-rotate(0deg) invert(0);
+  }
+
+  5% {
+    filter: hue-rotate(90deg) invert(1);
+  }
+
+  10% {
+    filter: hue-rotate(180deg) invert(0);
+    transform: translateX(10px);
+  }
+
+  15% {
+    filter: hue-rotate(270deg) invert(1);
+    transform: translateX(-15px) skewX(5deg);
+  }
+
+  20% {
+    filter: hue-rotate(45deg) invert(0);
+    transform: translateY(8px);
+  }
+
+  25% {
+    filter: hue-rotate(135deg) invert(1) contrast(200%);
+    transform: scaleY(1.02);
+  }
+
+  30% {
+    filter: hue-rotate(0deg) invert(0);
+    transform: translateX(5px) skewX(-3deg);
+  }
+
+  35% {
+    filter: invert(1) saturate(300%);
+    transform: translateX(-8px);
+  }
+
+  40% {
+    filter: hue-rotate(200deg) brightness(3);
+    transform: scaleX(1.01) skewY(2deg);
+  }
+
+  50% {
+    filter: hue-rotate(100deg) invert(1) contrast(150%);
+    transform: none;
+  }
+
+  60% {
+    filter: hue-rotate(300deg) invert(0) brightness(0.3);
+  }
+
+  70% {
+    filter: invert(1) hue-rotate(60deg);
+    transform: translateY(-5px);
+  }
+
+  80% {
+    filter: hue-rotate(0deg) invert(0) brightness(5);
+  }
+
+  85% {
+    opacity: 0;
+  }
+
+  90% {
+    opacity: 1;
+    filter: none;
+  }
+
+  95% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+    filter: none;
+  }
 }
 
 /* ============================================================
@@ -291,13 +294,11 @@ body {
   z-index: 2;
   pointer-events: none;
   opacity: var(--scanline-opacity);
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.3) 2px,
-    rgba(0, 0, 0, 0.3) 4px
-  );
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.3) 2px,
+      rgba(0, 0, 0, 0.3) 4px);
   transition: opacity 0.3s;
 }
 
@@ -323,8 +324,15 @@ body {
 }
 
 @keyframes trailFade {
-  0%   { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.5); }
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
 }
 
 /* ============================================================
@@ -364,7 +372,7 @@ body {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-float);
   filter: var(--avatar-filter);
-  transition: 
+  transition:
     filter var(--transition-speed) var(--transition-ease),
     border-radius var(--transition-speed) var(--transition-ease),
     box-shadow var(--transition-speed) var(--transition-ease);
@@ -386,11 +394,33 @@ body {
 }
 
 @keyframes avatarDistort {
-  0%, 90%, 100% { clip-path: inset(0); transform: none; }
-  92% { clip-path: inset(20% 0 30% 0); transform: translateX(4px) skewX(2deg); }
-  94% { clip-path: inset(50% 0 10% 0); transform: translateX(-6px); }
-  96% { clip-path: inset(10% 0 60% 0); transform: translateX(3px) skewX(-1deg); }
-  98% { clip-path: inset(0); transform: scaleY(1.02); }
+
+  0%,
+  90%,
+  100% {
+    clip-path: inset(0);
+    transform: none;
+  }
+
+  92% {
+    clip-path: inset(20% 0 30% 0);
+    transform: translateX(4px) skewX(2deg);
+  }
+
+  94% {
+    clip-path: inset(50% 0 10% 0);
+    transform: translateX(-6px);
+  }
+
+  96% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translateX(3px) skewX(-1deg);
+  }
+
+  98% {
+    clip-path: inset(0);
+    transform: scaleY(1.02);
+  }
 }
 
 /* 用户名 */
@@ -400,7 +430,7 @@ body {
   color: var(--text-primary);
   margin-bottom: 12px;
   text-shadow: var(--glitch-text-shadow);
-  transition: 
+  transition:
     color var(--transition-speed) var(--transition-ease),
     text-shadow var(--transition-speed) var(--transition-ease);
   user-select: none;
@@ -413,11 +443,33 @@ body {
 }
 
 @keyframes textGlitch {
-  0%, 85%, 100% { transform: none; text-shadow: var(--glitch-text-shadow); }
-  86% { transform: translateX(3px) skewX(2deg); text-shadow: 4px 0 #FF0033, -4px 0 #00FF41; }
-  88% { transform: translateX(-5px); text-shadow: -3px 2px #FF0033, 3px -2px #00FF41; }
-  90% { transform: translateX(2px) skewX(-1deg); text-shadow: 2px 0 #8B0000; }
-  92% { transform: none; text-shadow: var(--glitch-text-shadow); }
+
+  0%,
+  85%,
+  100% {
+    transform: none;
+    text-shadow: var(--glitch-text-shadow);
+  }
+
+  86% {
+    transform: translateX(3px) skewX(2deg);
+    text-shadow: 4px 0 #FF0033, -4px 0 #00FF41;
+  }
+
+  88% {
+    transform: translateX(-5px);
+    text-shadow: -3px 2px #FF0033, 3px -2px #00FF41;
+  }
+
+  90% {
+    transform: translateX(2px) skewX(-1deg);
+    text-shadow: 2px 0 #8B0000;
+  }
+
+  92% {
+    transform: none;
+    text-shadow: var(--glitch-text-shadow);
+  }
 }
 
 /* 简介 */
@@ -460,10 +512,24 @@ body {
 }
 
 @keyframes decoFlicker {
-  0%, 90%, 100% { opacity: 1; }
-  92% { opacity: 0; }
-  94% { opacity: 1; }
-  96% { opacity: 0.3; }
+
+  0%,
+  90%,
+  100% {
+    opacity: 1;
+  }
+
+  92% {
+    opacity: 0;
+  }
+
+  94% {
+    opacity: 1;
+  }
+
+  96% {
+    opacity: 0.3;
+  }
 }
 
 /* ============================================================
@@ -513,7 +579,7 @@ body {
   padding: 28px;
   box-shadow: var(--shadow-float);
   filter: var(--card-filter);
-  transition: 
+  transition:
     all var(--transition-speed) var(--transition-ease);
   position: relative;
   overflow: hidden;
@@ -613,7 +679,9 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ============================================================
@@ -638,8 +706,15 @@ body {
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
 }
 
 /* 恐怖模式心跳变快 */
@@ -649,8 +724,15 @@ body {
 }
 
 @keyframes heartbeatFast {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.4); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.4);
+  }
 }
 
 .footer-sub {
@@ -686,8 +768,13 @@ body {
 }
 
 @keyframes blackoutFlash {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /* 恐怖模式卡片闪烁消失 */
@@ -696,11 +783,25 @@ body {
 }
 
 @keyframes flickerOut {
-  0%   { opacity: 1; }
-  25%  { opacity: 0; }
-  50%  { opacity: 0.7; }
-  75%  { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  75% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* ============================================================
@@ -711,11 +812,25 @@ body {
 }
 
 @keyframes screenShake {
-  0%   { transform: translate(0, 0); }
-  25%  { transform: translate(3px, -2px); }
-  50%  { transform: translate(-3px, 1px); }
-  75%  { transform: translate(2px, 3px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(3px, -2px);
+  }
+
+  50% {
+    transform: translate(-3px, 1px);
+  }
+
+  75% {
+    transform: translate(2px, 3px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* ============================================================
@@ -777,16 +892,12 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse at 30% 20%,
-    rgba(168, 198, 134, 0.15) 0%,
-    transparent 50%
-  ),
-  radial-gradient(
-    ellipse at 70% 80%,
-    rgba(242, 192, 120, 0.12) 0%,
-    transparent 50%
-  );
+  background: radial-gradient(ellipse at 30% 20%,
+      rgba(168, 198, 134, 0.15) 0%,
+      transparent 50%),
+    radial-gradient(ellipse at 70% 80%,
+      rgba(242, 192, 120, 0.12) 0%,
+      transparent 50%);
   animation: bgBreathe 8s ease-in-out infinite;
   transition: opacity 1s;
 }
@@ -797,6 +908,15 @@ body.horror-mode::before {
 }
 
 @keyframes bgBreathe {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }

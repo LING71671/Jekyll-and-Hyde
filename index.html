@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,13 @@
   <!-- Google Fonts: 治愈模式用 Varela Round，恐怖模式用 Creepster -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Creepster&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Creepster&family=Noto+Sans+SC:wght@400;700&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!-- ============================================================
@@ -24,18 +28,7 @@
        如果您对闪烁灯光敏感，请谨慎操作。
        ============================================================ -->
 
-  <!-- 光敏警告弹窗（在触发恐怖模式前弹出） -->
-  <div id="epilepsy-warning" class="warning-overlay" aria-hidden="true">
-    <div class="warning-dialog">
-      <h2>⚠️ 光敏性癫痫警告</h2>
-      <p>接下来的内容包含<strong>快速闪烁的灯光、屏幕抖动和颜色反转效果</strong>。</p>
-      <p>如果您对闪光灯敏感或有光敏性癫痫病史，<strong>请勿继续</strong>。</p>
-      <div class="warning-actions">
-        <button id="warning-proceed" class="btn-proceed">我了解风险，继续</button>
-        <button id="warning-cancel" class="btn-cancel">取消</button>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Glitch 过渡动画覆盖层 -->
   <div id="glitch-overlay" class="glitch-overlay" aria-hidden="true">
@@ -98,4 +91,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

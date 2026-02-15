@@ -222,31 +222,11 @@ function requestModeSwitch() {
     return;
   }
 
-  // 弹出光敏警告
-  const overlay = document.getElementById('epilepsy-warning');
-  overlay.classList.add('active');
-  overlay.setAttribute('aria-hidden', 'false');
+  // 直接触发 Glitch 过渡动画
+  triggerGlitchTransition();
 }
 
-/**
- * 初始化警告弹窗按钮事件
- */
-function initWarningDialog() {
-  const overlay = document.getElementById('epilepsy-warning');
-  const btnProceed = document.getElementById('warning-proceed');
-  const btnCancel = document.getElementById('warning-cancel');
 
-  btnProceed.addEventListener('click', () => {
-    overlay.classList.remove('active');
-    overlay.setAttribute('aria-hidden', 'true');
-    triggerGlitchTransition();
-  });
-
-  btnCancel.addEventListener('click', () => {
-    overlay.classList.remove('active');
-    overlay.setAttribute('aria-hidden', 'true');
-  });
-}
 
 /* ============================================================
    4. Glitch 过渡动画
@@ -292,7 +272,7 @@ function triggerGlitchTransition() {
     for (let i = 0; i < data.length; i += 4) {
       const noise = Math.random() * 255;
       const intensity = Math.random() > 0.5 + progress * 0.3 ? 1 : 0;
-      data[i]     = noise * intensity;                          // R
+      data[i] = noise * intensity;                          // R
       data[i + 1] = (Math.random() > 0.7 ? 255 : 0) * intensity; // G
       data[i + 2] = (Math.random() > 0.8 ? noise : 0) * intensity; // B
       data[i + 3] = Math.floor(180 * (1 - progress * 0.3));    // A
@@ -415,7 +395,7 @@ function startNoiseAnimation() {
         for (let dy = 0; dy < blockSize && y + dy < canvas.height; dy++) {
           for (let dx = 0; dx < blockSize && x + dx < canvas.width; dx++) {
             const index = ((y + dy) * canvas.width + (x + dx)) * 4;
-            data[index]     = value;
+            data[index] = value;
             data[index + 1] = value * 0.8;
             data[index + 2] = value * 0.6;
             data[index + 3] = 40;
@@ -690,8 +670,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTitleClickTrigger();
   initSecretPixelTrigger();
 
-  // 初始化警告弹窗
-  initWarningDialog();
+
 
   console.log(
     '%c🌸 欢迎来到我的个人主页！',
